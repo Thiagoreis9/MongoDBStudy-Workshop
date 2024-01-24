@@ -1,20 +1,27 @@
 package com.thiagoreis.workshopmongo.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.thiagoreis.workshopmongo.domain.User;
 import com.thiagoreis.workshopmongo.repository.UserRepository;
+import com.thiagoreis.workshopmongo.services.exception.ObjectNotFoundException;
 
 @Service
 public class UserService {
 	
 	@Autowired
-	private UserRepository userRepository; 
+	private UserRepository repository; 
 	
 	public List<User> findAll(){
-		return userRepository.findAll();
+		return repository.findAll();
+	}
+	
+	public User findById(String id) {
+		Optional<User> obj = repository.findById(id);
+		return obj.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado"));
 	}
 }
